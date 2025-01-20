@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobonill <mobonill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: npatron <npatron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:21:50 by morgane           #+#    #+#             */
-/*   Updated: 2025/01/20 16:55:37 by mobonill         ###   ########.fr       */
+/*   Updated: 2025/01/20 20:13:50 by npatron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ void parsing_cub(char *argv)
 	if (are_colors_and_textures_before_map(data) == false)
 		err(TXT_AFTER_MAP);
 	check_starting_point(data->map, data->map_lines);
+	map_line_max_lenght(data->map);
 	// FREE TEXTURES;
 	// FREE COLORS;
 	// FREE MAP

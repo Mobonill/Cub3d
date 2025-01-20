@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   textures_and colors.c                              :+:      :+:    :+:   */
+/*   textures_and_colors.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobonill <mobonill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: npatron <npatron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 16:47:29 by mobonill          #+#    #+#             */
-/*   Updated: 2025/01/20 16:51:02 by mobonill         ###   ########.fr       */
+/*   Updated: 2025/01/20 20:16:07 by npatron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,8 @@ char	*find_textures_paths(char *file, char *txt)
 void	extract_textures(t_data *data)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	j = 0;
 	while (data->file[i] && i < data->map_start)
 	{
 		if (ft_strncmp(data->file[i], "NO", 2) == 0)

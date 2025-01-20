@@ -7,6 +7,7 @@ SRC =	srcs/parsing.c \
 		srcs/utils.c \
 		srcs/free.c \
 		srcs/textures_and_colors.c \
+		srcs/parsing_map.c \
 
 
 RM = rm -f

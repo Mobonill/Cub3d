@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobonill <mobonill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: npatron <npatron@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:19:11 by morgane           #+#    #+#             */
-/*   Updated: 2025/01/20 15:47:22 by mobonill         ###   ########.fr       */
+/*   Updated: 2025/01/20 20:58:35 by npatron          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <string.h>
-# include <X11/keysym.h>
-# include <X11/X.h>
+// # include <X11/keysym.h>
+// # include <X11/X.h>
 # include <fcntl.h>
 # include <stdbool.h>
 
@@ -61,6 +61,9 @@ bool	are_colors_and_textures_before_map(t_data *data);
 void	save_map(char **file, char ***map, int *map_lines, int *map_start);
 void parsing_cub(char *argv);
 void	check_starting_point(char **map, int map_lines);
+
+// PARSING MAP
+void    map_line_max_lenght(char **map);
 
 
 // UTILS
