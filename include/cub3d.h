@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mobonill <mobonill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:19:11 by morgane           #+#    #+#             */
-/*   Updated: 2025/01/16 16:48:24 by morgane          ###   ########.fr       */
+/*   Updated: 2025/01/20 15:47:22 by mobonill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,37 @@
 #define ID_COLORS "Color id is not valid \n"
 #define NUM_RGB "There are too much arguments, please respect RGB format\n"
 #define RGB_COMA_FORMAT "RGB format is not valid because of comas' or arguments' number\n"
+#define CHAR_NOT_VALID "Character invalid in the map\n"
+#define STARTING_POINT "Starting point not valid\n"
+#define TXT_AFTER_MAP "Textures and colors have to be before your map\n"
 
 typedef struct s_data
 {
-    int     *f_color;
-    int     *c_color;
-    char    **file;
-    char    *no_txt;
-    char    *so_txt;
-    char    *we_txt;
-    char    *ea_txt;
-    char    **map;
-}   t_data ;
+	int		map_lines;
+	int		map_start;
+	int		*f_color;
+	int		*c_color;
+	char	**file;
+	char	*no_txt;
+	char	*so_txt;
+	char	*we_txt;
+	char	*ea_txt;
+	char	**map;
+} t_data;
+
+// PARSING
+void	err(char *str);
+bool	is_valid_data_extension(char *argv);
+int count_lines_fd(char *argv);
+void	copy_cub_file(char *argv, t_data *data);
+char	*find_textures_paths(char *file, char *txt);
+void	extract_textures(t_data *data);
+int	*find_rgb_colors(char *file, int *colors);
+void	extract_colors(t_data *data);
+bool	are_colors_and_textures_before_map(t_data *data);
+void	save_map(char **file, char ***map, int *map_lines, int *map_start);
+void parsing_cub(char *argv);
+void	check_starting_point(char **map, int map_lines);
 
 
 // UTILS

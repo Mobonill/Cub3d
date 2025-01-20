@@ -6,8 +6,9 @@ CFLAGS = -Wall -Wextra -Werror -I. -g #-fsanitize=address
 SRC =	srcs/parsing.c \
 		srcs/utils.c \
 		srcs/free.c \
+		srcs/textures_and_colors.c \
 
-	
+
 RM = rm -f
 
 OBJ = $(SRC:.c=.o)
