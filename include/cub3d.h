@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:19:11 by morgane           #+#    #+#             */
-/*   Updated: 2025/01/13 23:38:39 by morgane          ###   ########.fr       */
+/*   Updated: 2025/01/16 16:48:24 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,10 @@
 #define EXTENSION "Map extension is not valid. Please use \".cub\" extension.\n"
 #define OPENFD "Map file descriptor is not valid\n"
 #define MALLOC "Allocation failed\n"
-#define ID "Texture id is not valid \n"
-
+#define ID_TXT "Texture id is not valid \n"
+#define ID_COLORS "Color id is not valid \n"
+#define NUM_RGB "There are too much arguments, please respect RGB format\n"
+#define RGB_COMA_FORMAT "RGB format is not valid because of comas' or arguments' number\n"
 
 typedef struct s_data
 {
