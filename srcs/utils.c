@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobonill <mobonill@student.42.fr>          +#+  +:+       +#+        */
+/*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 12:01:10 by morgane           #+#    #+#             */
-/*   Updated: 2025/01/20 16:55:18 by mobonill         ###   ########.fr       */
+/*   Updated: 2025/01/21 18:22:47 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,3 +49,5 @@ int count_lines_fd(char *argv)
 	close(fd);
 	return (len);
 }
+
+

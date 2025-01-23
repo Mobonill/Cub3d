@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 01:20:40 by mobonill          #+#    #+#             */
-/*   Updated: 2025/01/18 15:48:53 by morgane          ###   ########.fr       */
+/*   Updated: 2025/01/23 11:14:25 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@ char	*get_my_dest(char *rest)
 		return (NULL);
 	while (rest[i] && rest[i] != '\n')
 		i++;
-	tmp = (char *)malloc(sizeof(char) * (i + 2));
+	tmp = (char *)malloc(sizeof(char) * (i + 1));
 	if (!tmp)
 		return (NULL);
 	i = 0;
-	while (rest[i] && rest[i] != '\n')
+	if (rest[i] && rest[i] == '\n')
 	{
 		tmp[i] = rest[i];
 		i++;
 	}
-	if (rest[i] && rest[i] == '\n')
+	while (rest[i] && rest[i] != '\n')
 	{
 		tmp[i] = rest[i];
 		i++;

@@ -3,35 +3,19 @@ SO  ./path
 WE ./path_to_the_west_texture
 EA ./path_to_the_east_texture
 
-C 225,30, 52
-F 220  ,        100  ,  85
+
+C  25     , 25 , 30 
+F 220  ,        100  ,  1
 
 
-1 ere etape --->
-
-111111111111111.   
-100000111.         
-    1000001111.  
-11000110001
-1111111111
-11  111111
+    111111  111111
+    100011  111011                
+    111001 1111111               
+    1100N1                      
+    11111              
+11111111
 
 
-
-2 eme etape ---> find max lenght line --> 16
---> donc, toutes mes lignes feront 18 de len
-
-
-3eme etape --> remplir mes lignes pour faire un carre -->
-Il y aura une ligne au dessus
-
-4 eme etape, verifier que mes 0 sont entourres uniquement de 1 ou de 0
-
-XXXXXXXXXXXXXXXXX
-X111111111111111XXxxxxX
-X100  00011                 
-X1000001111XXXXXXxxxxxxxxxxxxxxx
-X111100110001XXXXX
-X11  111111XXXXXX
-X11  111111XXXXXX
-XXXXXXXXXXXXXXXXX
+nettoyer le fichier entre les lignes
+gerer les whitespaces de new map apres la fin des 1 et 0
+gerer les espaces dans la map (floodfill);

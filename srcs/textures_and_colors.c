@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures_and_colors.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: npatron <npatron@student.42.fr>            +#+  +:+       +#+        */
+/*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 16:47:29 by mobonill          #+#    #+#             */
-/*   Updated: 2025/01/20 20:16:07 by npatron          ###   ########.fr       */
+/*   Updated: 2025/01/23 16:49:16 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,48 +59,42 @@ void	extract_textures(t_data *data)
 	}
 }
 
-int	*find_rgb_colors(char *file, int *colors)
+int	*find_rgb_colors(char *file, int *colors, int k, int i)
 {
-	int	i;
-	char	save[15];
+	char	**save;
+	char	*parsed;
 	int		j;
-	int		virgule;
-	int		k;
-	
-	i = 0;
-	j = 0;
-	k = 0;
-	virgule = 0;
+	int		start;
+
+	save = ft_split(file, ',');
 	colors = malloc(sizeof(int) * 3);
-	while (file[i] && (file[i] == '\t' || file[i] == ' '))
-		i++;
-	i++;
-	if (file[i] != '\t' && file[i] != ' ')
-		err(ID_COLORS);
-	while (file[i])
+	while(save[++i])
 	{
 		j = 0;
-		ft_memset(save, 0, sizeof(save));
-		if (file[i] == '\t' || file[i] == ' ')
-			i++;
-		else if (file[i] >= '0' && file[i] <= '9')
+		while(save[i][j] && (save[i][j] < '0' || save[i][j] > '9'))
+			j++;
+		if (save[i][j - 1] == '-')
+			err(RGB_SUP);
+		start = j;
+		while(save[i][j] && save[i][j] >= '0' && save[i][j] <= '9')
+			j++;
+		if ((j - start) > 0)
 		{
-			while (file[i] && file[i] >= '0' && file[i] <= '9' && file[i] != ',' && file[i] != '\t' && file[i] != ' ')
-				save[j++] = file[i++];
+			if ((j - start) > 3)
+				err(RGB_SUP);
+			parsed = ft_substr(save[i], start, j - start);
+			colors[k++] = ft_atoi(parsed);
+			free(parsed);
 		}
-		else if (file[i++] == ',')
-			virgule++;
-		else
-			i++;
-		if (j > 0)
-			colors[k++] = ft_atoi(save);
+		while(save[i][j++])
+			if (save[i][j] != ' ' && save[i][j] != '\t' && save[i][j] != '\0')
+				err(NUM_RGB);
 	}
-	if (virgule != 2)
-		err(RGB_COMA_FORMAT);
 	return (colors);
 }
 
-void	extract_colors(t_data *data)
+
+void	extract_valid_colors(t_data *data)
 {
 	int	i;
 
@@ -108,9 +102,23 @@ void	extract_colors(t_data *data)
 	while (data->file[i] && i < data->map_start)
 	{
 		if (ft_strncmp(data->file[i], "F", 1) == 0)
-			data->f_color = find_rgb_colors(data->file[i], data->f_color);
+			data->f_color = find_rgb_colors(data->file[i], data->f_color, 0, -1);
 		else if (ft_strncmp(data->file[i], "C", 1) == 0)
-			data->c_color = find_rgb_colors(data->file[i], data->c_color);
+			data->c_color = find_rgb_colors(data->file[i], data->c_color, 0, -1);
+		i++;
+	}
+	i = 0;
+	while(data->c_color[i])
+	{
+		if (data->c_color[i] > 255)
+			err(RGB_SUP);
+		i++;
+	}
+	i = 0;
+	while(data->f_color[i])
+	{
+		if (data->f_color[i] > 255)
+			err(RGB_SUP);
 		i++;
 	}
 }
@@ -124,14 +132,13 @@ bool	are_colors_and_textures_before_map(t_data *data)
 	while (data->file[i])
 	{
 		j = 0;
-		printf("%s", data->file[i]);
 		while (data->file[i][j] == ' ' || data->file[i][j] == '\t')
 			j++;
 		if (data->file[i][j] == '1')
 		{
 			while (data->file[i][j] && (data->file[i][j] == '1' || data->file[i][j] == ' ' || data->file[i][j] == '\t'))
 				j++;
-			if (data->file[i][j] == '\n' && data->file[i][j + 1] == '\0')
+			if (data->file[i][j] == '\0')
 			{
 				if (data->no_txt && data->so_txt && data->we_txt && data->ea_txt && data->c_color && data->f_color)
 					return (true);
