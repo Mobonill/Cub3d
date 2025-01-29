@@ -6,13 +6,13 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:24:05 by morgane           #+#    #+#             */
-/*   Updated: 2025/01/23 16:49:50 by morgane          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:51:26 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-int   map_line_max_lenght(char **map)
+int map_line_max_lenght(char **map)
 {
     int     i;
     size_t  max;
@@ -31,7 +31,6 @@ int   map_line_max_lenght(char **map)
     return ((int)max);
 }
 
-
 void	parsing_map(t_data *data)
 {
 	int	max_len;
@@ -41,58 +40,79 @@ void	parsing_map(t_data *data)
 	check_starting_point(data->map, data->map_lines);
 	max_len = map_line_max_lenght(data->map);
 	x_lines = create_first_and_bottom_lines(max_len, x_lines);
-	create_new_map(data, max_len, data->new_map, x_lines);
+	data->new_map = create_new_map(data, max_len, data->new_map, x_lines);
+	printf("apres : \n");
+	print_char_tab(data->new_map);
+	free(x_lines);
+	
 }
 char	*create_first_and_bottom_lines(int max_len, char *x_lines)
 {
 	int	j;
 
-	j = -1;
-	x_lines = malloc(sizeof(char) * (max_len + 2));
+	j = 0;
+	x_lines = malloc(sizeof(char) * (max_len + 3));
 	if (!x_lines)
 		err(MALLOC);
-	while (++j <= max_len + 1)
+	while (j <= max_len)
+	{
 		x_lines[j] = 'X';
-	x_lines[max_len + 2] = '\0';
+		j++;
+	}
+	x_lines[j] = '\0';
 	return (x_lines);
 }
-void create_new_map(t_data *data, int max_len, char **new_map, char *x_lines)
+
+char	*fill_line(char *map, int len)
+{
+	char 	*res;
+	int		i;
+	int 	j;
+	
+	i = 0;
+	j = 1;
+	
+	res = malloc(sizeof(char) * (len + 3));
+	res[0] = 'X';
+	while (map[i])
+	{
+		if (map[i] == '1' || map[i] == '0')
+			res[j] = map[i];
+		else
+			res[j] = 'X';
+		j++;
+		i++;
+	}
+	while (j <= len) {
+		res[j] = 'X';
+		j++;
+	}
+	res[j] = '\0';
+	return (res);
+}
+char **create_new_map(t_data *data, int max_len, char **new_map, char *x_lines)
 {
 	int		i;
 	int		j;
-	int		k;
 
 	i = 0;
+	j = 1;
+
+	printf("AVANT ----> \n\n");
+	print_char_tab(data->map);
 	new_map = malloc(sizeof(char *) * (data->map_lines + 3));
-	if (!new_map)
-		err(MALLOC);
 	new_map[0] = x_lines;
-	while(i < data->map_lines)
+	while (data->map[i])
 	{
-		j = 0;
-		k = i + 1;
-		new_map[k] = malloc(sizeof(char) * (max_len + 3));
-		new_map[k][0] = 'X';
-		while (j <= max_len)
-		{
-			if (data->map[i][j] == '1' || data->map[i][j] == '0')
-				new_map[k][j+1] = data->map[i][j];
-			else if (data->map[i][j] == 'N' || data->map[i][j] == 'S' || data->map[i][j] == 'E' || data->map[i][j] == 'W')
-				new_map[k][j + 1] = '0';
-			else
-				new_map[k][j+1] = 'X';
-			j++;
-		}
-		new_map[k][j+1] = '\0';
+		new_map[j] = fill_line(data->map[i], max_len);
+		j++;
 		i++;
 	}
-	new_map[k + 1] = ft_strdup(x_lines);
-	new_map[data->map_lines + 2] = NULL;
-	if (is_map_closed(new_map) == false)
-		err(MAP_OPENED);
-	free(x_lines);
-	
+	new_map[j] = ft_strdup(x_lines);
+	new_map[j + 1] = NULL;
+	return (new_map);
 }
+
 
 bool	is_map_closed(char **new_map)
 {
@@ -104,7 +124,6 @@ bool	is_map_closed(char **new_map)
 	while(new_map[i])
 	{
 		j = 0;
-		printf("%s\n", new_map[i]);
 		while (new_map[i][j])
 		{
 			if (new_map[i][j] == '0')
@@ -113,6 +132,7 @@ bool	is_map_closed(char **new_map)
 					return (false);
 				if ((new_map[i][j + 1] != '0' && new_map[i][j + 1] != '1') || (new_map[i + 1][j] != '0' && new_map[i + 1][j] != '1'))
 					return (false);
+				// is position
 			}
 			j++;
 		}
@@ -120,4 +140,3 @@ bool	is_map_closed(char **new_map)
 	}
 	return(true);
 }
-

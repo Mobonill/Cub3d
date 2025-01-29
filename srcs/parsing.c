@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:21:50 by morgane           #+#    #+#             */
-/*   Updated: 2025/01/23 16:49:37 by morgane          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:48:05 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	save_map(char **file, char ***map, int *map_lines, int *map_start)
 			break;
 		i++;
 	}
-	if (*map_start == -1 || map_lines == 0)
+	if (*map_start == -1 || *map_lines < 3)
 		err(MAP_INVALID);
 	*map = (char **)malloc(sizeof(char *) * (*map_lines + 1));
 	if (!*map)

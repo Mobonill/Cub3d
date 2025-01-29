@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:19:11 by morgane           #+#    #+#             */
-/*   Updated: 2025/01/23 16:49:25 by morgane          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:51:55 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct s_data
 {
 	int		map_lines;
 	int		map_start;
+	int		end_map;
+	
 	int		*f_color;
 	int		*c_color;
 	char	**file;
@@ -50,6 +52,10 @@ typedef struct s_data
 	char	*ea_txt;
 	char	**map;
 	char	**new_map;
+	int		x_pos;
+	int		y_pos;
+
+	
 } t_data;
 
 // PARSING
@@ -70,9 +76,10 @@ void	check_starting_point(char **map, int map_lines);
 void	parsing_map(t_data *data);
 int   map_line_max_lenght(char **map);
 void	fullfil_map_with_x(char **map, int len_max, int height);
-void	create_new_map(t_data *data, int max_len, char **new_map, char *x_lines);
+char **create_new_map(t_data *data, int max_len, char **new_map, char *x_lines);
 char	*create_first_and_bottom_lines(int max_len, char *x_lines);
 bool	is_map_closed(char **new_map);
+char	*fill_line(char *map, int len);
 
 // UTILS
 void    print_char_tab(char **tab);
