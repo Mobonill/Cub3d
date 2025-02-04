@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 16:47:29 by mobonill          #+#    #+#             */
-/*   Updated: 2025/01/23 16:49:16 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/04 19:42:05 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 char	*find_textures_paths(char *file, char *txt)
 {
-	int j;
-	int len;
+	int	j;
+	int	len;
 	int	start;
 
 	j = 0;
-	len =0;
+	len = 0;
 	(void)txt;
 	while (file[j] && (file[j] == '\t' || file[j] == ' '))
 		j++;
@@ -59,6 +59,16 @@ void	extract_textures(t_data *data)
 	}
 }
 
+int	lenTab(char **tab) {
+	
+	int i = 0;
+
+	while (tab[i])
+		i++;
+	return i;
+
+}
+
 int	*find_rgb_colors(char *file, int *colors, int k, int i)
 {
 	char	**save;
@@ -67,6 +77,7 @@ int	*find_rgb_colors(char *file, int *colors, int k, int i)
 	int		start;
 
 	save = ft_split(file, ',');
+	printf("%d LEN\n", lenTab(save));
 	colors = malloc(sizeof(int) * 3);
 	while(save[++i])
 	{
@@ -93,7 +104,6 @@ int	*find_rgb_colors(char *file, int *colors, int k, int i)
 	return (colors);
 }
 
-
 void	extract_valid_colors(t_data *data)
 {
 	int	i;
@@ -107,26 +117,12 @@ void	extract_valid_colors(t_data *data)
 			data->c_color = find_rgb_colors(data->file[i], data->c_color, 0, -1);
 		i++;
 	}
-	i = 0;
-	while(data->c_color[i])
-	{
-		if (data->c_color[i] > 255)
-			err(RGB_SUP);
-		i++;
-	}
-	i = 0;
-	while(data->f_color[i])
-	{
-		if (data->f_color[i] > 255)
-			err(RGB_SUP);
-		i++;
-	}
+	color_is_valid(data);
 }
 
-bool	are_colors_and_textures_before_map(t_data *data)
+bool	are_colors_and_textures_before_map(t_data *data, int j)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (data->file[i])
@@ -136,11 +132,13 @@ bool	are_colors_and_textures_before_map(t_data *data)
 			j++;
 		if (data->file[i][j] == '1')
 		{
-			while (data->file[i][j] && (data->file[i][j] == '1' || data->file[i][j] == ' ' || data->file[i][j] == '\t'))
+			while (data->file[i][j] && (data->file[i][j] == '1'
+				|| data->file[i][j] == ' ' || data->file[i][j] == '\t'))
 				j++;
 			if (data->file[i][j] == '\0')
 			{
-				if (data->no_txt && data->so_txt && data->we_txt && data->ea_txt && data->c_color && data->f_color)
+				if (data->no_txt && data->so_txt && data->we_txt
+					&& data->ea_txt && data->c_color && data->f_color)
 					return (true);
 				else
 					return (false);

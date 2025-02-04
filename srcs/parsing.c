@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:21:50 by morgane           #+#    #+#             */
-/*   Updated: 2025/01/29 17:48:05 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/04 19:19:56 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ bool	is_valid_data_extension(char *argv)
 	i = ft_strlen(argv);
 	if (i < 5)
 		return (false);
-	if (argv[i - 1] == 'b' && argv[i - 2] == 'u' && argv[i - 3] == 'c' && argv[i - 4] == '.')
+	if (argv[i - 1] == 'b' && argv[i - 2] == 'u'
+		&& argv[i - 3] == 'c' && argv[i - 4] == '.')
 		return (true);
 	return (false);
 }
@@ -42,16 +43,18 @@ void	copy_cub_file(char *argv, t_data *data)
 	if (!data->file)
 		err(MALLOC);
 	i = 0;
-	while ((line = get_next_line(fd)) != NULL)
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
 		data->file[i++] = ft_strdup(line);
 		free(line);
+		line = get_next_line(fd);
 	}
 	data->file[i] = NULL;
 	close(fd);
 }
 
-void	save_map(char **file, char ***map, int *map_lines, int *map_start)
+void	where_is_the_map(t_data *data, char **file, int *map_lines)
 {
 	int	i;
 	int	j;
@@ -64,25 +67,30 @@ void	save_map(char **file, char ***map, int *map_lines, int *map_start)
 			j++;
 		if (file[i][j] == '1' || file[i][j] == '0')
 		{
-			if (file[i][j] == '0')
-				err(MAP_OPENED);
-			else if (*map_start == -1)
-				*map_start = i;
+			if (data->map_start == -1)
+				data->map_start = i;
 			(*map_lines)++;
 		}
-		else if (*map_start != -1)
-			break;
+		else if (data->map_start != -1)
+			break ;
 		i++;
 	}
-	if (*map_start == -1 || *map_lines < 3)
+	if (data->map_start == -1 || *map_lines < 3)
 		err(MAP_INVALID);
+	data->end_map = data->map_start + *map_lines;
+}
+
+void	save_map(t_data *data, char **file, char ***map, int *map_lines)
+{
+	int	i;
+
 	*map = (char **)malloc(sizeof(char *) * (*map_lines + 1));
 	if (!*map)
 		err(MALLOC);
 	i = 0;
 	while (i < *map_lines)
 	{
-		(*map)[i] = ft_strdup(file[*map_start + i]);
+		(*map)[i] = ft_strdup(file[data->map_start + i]);
 		if (!(*map)[i])
 			err(MALLOC);
 		i++;
@@ -90,80 +98,31 @@ void	save_map(char **file, char ***map, int *map_lines, int *map_start)
 	(*map)[i] = NULL;
 }
 
-void	check_starting_point(char **map, int map_lines)
+void	check_starting_point(char **map, int map_lines, t_data *data, int j)
 {
 	int	i;
-	int	j;
-	int	starting_char;
 
-	i = 0;
-	starting_char = 0;
-	while (i < map_lines && map[i])
+	i = -1;
+	while (++i < map_lines && map[i])
 	{
 		j = 0;
 		while (map[i][j] != '\0')
 		{
-			if (map[i][j] != ' ' && map[i][j] != '1' && map[i][j] != '0' && map[i][j] != '\t')
+			if (map[i][j] != ' ' && map[i][j] != '1' && map[i][j] != '0'
+				&& map[i][j] != '\t' && map[i][j] != '\0')
 			{
-				if (map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W' || map[i][j] == 'E')
-					starting_char++;
+				if (map[i][j] == 'N' || map[i][j] == 'S'
+					|| map[i][j] == 'W' || map[i][j] == 'E')
+				{
+					data->x_pos = i + 1;
+					data->y_pos = j + 1;
+				}
 				else
 					err(CHAR_NOT_VALID);
 			}
 			j++;
 		}
-		i++;
 	}
-	if (starting_char != 1)
+	if (data->x_pos == 0 && data->y_pos == 0)
 		err(STARTING_POINT);
-}
-
-// void	initialise_data_structure(t_data *data)
-// {
-
-// }
-
-
-void parsing_cub(char *argv)
-{
-	t_data	*data;
-
-	data = NULL;
-		data = malloc(sizeof(t_data));
-	if (!data)
-		err(MALLOC);
-	data->file = NULL;
-	data->c_color = NULL;
-	data->f_color = NULL;
-	data->no_txt = NULL;
-	data->so_txt = NULL;
-	data->ea_txt = NULL;
-	data->we_txt = NULL;
-	data->new_map = NULL;
-	data->map_lines = 0;
-	data->map_start = -1;
-	if (!is_valid_data_extension(argv))
-		err(EXTENSION);
-	// initialise_data_structure(data);
-	copy_cub_file(argv, data);
-	save_map(data->file, &data->map, &data->map_lines, &data->map_start);
-	extract_textures(data);
-	extract_valid_colors(data);
-	if (are_colors_and_textures_before_map(data) == false)
-		err(TXT_AFTER_MAP);
-	parsing_map(data);
-	// FREE TEXTURES;
-	// FREE COLORS;
-	// FREE MAP
-	free_char_tab(data->map);
-	free_char_tab(data->file);
-	free(data);
-}
-
-int	main(int argc, char **argv)
-{
-	if (argc != 2)
-		return (1);
-	parsing_cub(argv[1]);
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:19:11 by morgane           #+#    #+#             */
-/*   Updated: 2025/01/29 17:51:55 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/04 19:22:55 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@
 #define MAP_OPENED "Error: Map is opened\n"
 #define MAP_INVALID "Error : No valid map found\n"
 #define RGB_SUP "Error: RGB colors are between 0 and 255\n"
+#define CLEAN "Error: Informations have to be separated by empty lines, please clean your file\n"
 
 typedef struct s_data
 {
 	int		map_lines;
 	int		map_start;
 	int		end_map;
-	
 	int		*f_color;
 	int		*c_color;
 	char	**file;
@@ -58,35 +58,50 @@ typedef struct s_data
 	
 } t_data;
 
+// MAIN
+void	init_data(t_data *data);
+void	parsing_cub(char *argv);
+
 // PARSING
-void	err(char *str);
 bool	is_valid_data_extension(char *argv);
-int count_lines_fd(char *argv);
 void	copy_cub_file(char *argv, t_data *data);
+void	where_is_the_map(t_data *data, char **file, int *map_lines);
+void	save_map(t_data *data, char **file, char ***map, int *map_lines);
+void	check_starting_point(char **map, int map_lines, t_data *data, int j);
+
+// TEXTURES AND COLORS
 char	*find_textures_paths(char *file, char *txt);
 void	extract_textures(t_data *data);
 int		*find_rgb_colors(char *file, int *colors, int k, int i);
 void	extract_valid_colors(t_data *data);
-bool	are_colors_and_textures_before_map(t_data *data);
-void	save_map(char **file, char ***map, int *map_lines, int *map_start);
-void parsing_cub(char *argv);
-void	check_starting_point(char **map, int map_lines);
+bool	are_colors_and_textures_before_map(t_data *data, int j);
+
 
 // PARSING MAP
 void	parsing_map(t_data *data);
-int   map_line_max_lenght(char **map);
-void	fullfil_map_with_x(char **map, int len_max, int height);
-char **create_new_map(t_data *data, int max_len, char **new_map, char *x_lines);
 char	*create_first_and_bottom_lines(int max_len, char *x_lines);
-bool	is_map_closed(char **new_map);
 char	*fill_line(char *map, int len);
+char	**create_new_map(t_data *data, int max_len, char **new_map, char *x_lines);
+bool	is_map_closed(char **new_map, int len, int rows);
+
+// CLEAN FILE
+bool	line_is_not_texture(t_data *data, int i, int *checker);
+bool	line_is_not_color(t_data *data, int i, int *checker);
+bool	line_is_not_empty(t_data *data, int i);
+bool	file_is_clean(t_data *data);
+void	file_end_is_clean(t_data *data);
+
 
 // UTILS
-void    print_char_tab(char **tab);
-void	initialise_data_structure(t_data *data);
+void	color_is_valid(t_data *data);
+void	print_char_tab(char **tab);
+void	err(char *str);
+int 	count_lines_fd(char *argv);
+int 	map_line_max_lenght(char **map);
+bool	is_valid_char(char c);
 
 //FREE
-void    free_char_tab(char **tab);
+void	free_char_tab(char **tab);
 
 
 #endif
