@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 16:47:29 by mobonill          #+#    #+#             */
-/*   Updated: 2025/02/04 19:42:05 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/05 19:06:28 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,36 +59,23 @@ void	extract_textures(t_data *data)
 	}
 }
 
-int	lenTab(char **tab) {
-	
-	int i = 0;
-
-	while (tab[i])
-		i++;
-	return i;
-
-}
-
-int	*find_rgb_colors(char *file, int *colors, int k, int i)
+int	*find_rgb_colors(char *file, int *colors, int k)
 {
 	char	**save;
 	char	*parsed;
 	int		j;
 	int		start;
+	int		i;
 
+	i = -1;
 	save = ft_split(file, ',');
-	printf("%d LEN\n", lenTab(save));
 	colors = malloc(sizeof(int) * 3);
-	while(save[++i])
+	while (save[++i])
 	{
 		j = 0;
-		while(save[i][j] && (save[i][j] < '0' || save[i][j] > '9'))
+		while (save[i][j] && (save[i][j] < '0' || save[i][j] > '9'))
 			j++;
-		if (save[i][j - 1] == '-')
-			err(RGB_SUP);
 		start = j;
-		while(save[i][j] && save[i][j] >= '0' && save[i][j] <= '9')
-			j++;
 		if ((j - start) > 0)
 		{
 			if ((j - start) > 3)
@@ -97,9 +84,6 @@ int	*find_rgb_colors(char *file, int *colors, int k, int i)
 			colors[k++] = ft_atoi(parsed);
 			free(parsed);
 		}
-		while(save[i][j++])
-			if (save[i][j] != ' ' && save[i][j] != '\t' && save[i][j] != '\0')
-				err(NUM_RGB);
 	}
 	return (colors);
 }
@@ -112,12 +96,19 @@ void	extract_valid_colors(t_data *data)
 	while (data->file[i] && i < data->map_start)
 	{
 		if (ft_strncmp(data->file[i], "F", 1) == 0)
-			data->f_color = find_rgb_colors(data->file[i], data->f_color, 0, -1);
+		{
+			check_colors(data->file[i]);
+			data->f_color = find_rgb_colors(data->file[i], data->f_color, 0);
+			color_is_valid(data->f_color);
+		}
 		else if (ft_strncmp(data->file[i], "C", 1) == 0)
-			data->c_color = find_rgb_colors(data->file[i], data->c_color, 0, -1);
+		{
+			check_colors(data->file[i]);
+			data->c_color = find_rgb_colors(data->file[i], data->c_color, 0);
+			color_is_valid(data->c_color);
+		}
 		i++;
 	}
-	color_is_valid(data);
 }
 
 bool	are_colors_and_textures_before_map(t_data *data, int j)

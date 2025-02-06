@@ -6,42 +6,15 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 12:01:10 by morgane           #+#    #+#             */
-/*   Updated: 2025/02/04 18:33:09 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/05 19:09:37 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-void color_is_valid(t_data *data)
+void	print_char_tab(char **tab)
 {
-	int i;
-
-	i = 0;
-	if (data->c_color)
-	{
-		while (data->c_color[i])
-		{
-			if (data->c_color[i] > 255)
-				err(RGB_SUP);
-			i++;
-		}
-	}
-	i = 0;
-	if (data->f_color)
-	{
-		while (data->f_color[i])
-		{
-			if (data->f_color[i] > 255)
-				err(RGB_SUP);
-			i++;
-		}
-	}
-	return;
-}
-
-void print_char_tab(char **tab)
-{
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i])
@@ -49,7 +22,7 @@ void print_char_tab(char **tab)
 		printf("%s\n", tab[i]);
 		i++;
 	}
-	return;
+	return ;
 }
 
 void	err(char *str)
@@ -59,31 +32,33 @@ void	err(char *str)
 	exit(1);
 }
 
-int count_lines_fd(char *argv)
+int	count_lines_fd(char *argv)
 {
-	char *line;
-	int len;
-	int fd;
+	char	*line;
+	int		len;
+	int		fd;
 
 	line = NULL;
 	len = 0;
 	fd = open(argv, O_RDONLY);
 	if (fd < 0)
 		err(OPENFD);
-	while ((line = get_next_line(fd)) != NULL)
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
 		len++;
 		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 	return (len);
 }
 
-int map_line_max_lenght(char **map)
+int	map_line_max_lenght(char **map)
 {
-	int i;
-	size_t max;
-	size_t len;
+	int		i;
+	size_t	max;
+	size_t	len;
 
 	i = 0;
 	max = 0;

@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 18:23:50 by morgane           #+#    #+#             */
-/*   Updated: 2025/02/04 19:33:46 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/05 19:02:13 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,14 @@ void	parsing_cub(char *argv)
 		err(TXT_AFTER_MAP);
 	file_is_clean(data);
 	parsing_map(data);
-	// FREE TEXTURES;
-	// FREE COLORS;
-	// FREE MAP
+	free(data->c_color);
+	free(data->f_color);
+	free(data->ea_txt);
+	free(data->no_txt);
+	free(data->so_txt);
+	free(data->we_txt);
 	free_char_tab(data->map);
+	free_char_tab(data->new_map);
 	free_char_tab(data->file);
 	free(data);
 }

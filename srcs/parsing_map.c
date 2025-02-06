@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:24:05 by morgane           #+#    #+#             */
-/*   Updated: 2025/02/04 19:20:28 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/05 18:54:03 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,18 @@
 
 void	parsing_map(t_data *data)
 {
-	int	max_len;
+	int		max_len;
 	char	*x_lines;
-	
+
 	x_lines = NULL;
 	check_starting_point(data->map, data->map_lines, data, 0);
 	max_len = map_line_max_lenght(data->map);
 	x_lines = create_first_and_bottom_lines(max_len, x_lines);
 	data->new_map = create_new_map(data, max_len, data->new_map, x_lines);
-	if (is_map_closed(data->new_map, max_len + 1, data->map_lines + 2) == false)
+	if (is_map_closed(data->new_map, max_len + 1, data->map_lines + 2, 0)
+		== false)
 		err(MAP_OPENED);
 	print_char_tab(data->new_map);
-	free(x_lines);
-	
 }
 
 char	*create_first_and_bottom_lines(int max_len, char *x_lines)
@@ -46,13 +45,11 @@ char	*create_first_and_bottom_lines(int max_len, char *x_lines)
 	return (x_lines);
 }
 
-char	*fill_line(char *map, int len)
+char	*fill_line(char *map, int len, int i)
 {
 	char	*res;
-	int		i;
 	int		j;
-	
-	i = 0;
+
 	j = 1;
 	res = malloc(sizeof(char) * (len + 3));
 	res[0] = 'X';
@@ -77,7 +74,8 @@ char	*fill_line(char *map, int len)
 	return (res);
 }
 
-char	**create_new_map(t_data *data, int max_len, char **new_map, char *x_lines)
+char	**create_new_map(t_data *data, int max_len, char **new_map,
+	char *x_lines)
 {
 	int	i;
 	int	j;
@@ -88,7 +86,7 @@ char	**create_new_map(t_data *data, int max_len, char **new_map, char *x_lines)
 	new_map[0] = x_lines;
 	while (data->map[i])
 	{
-		new_map[j] = fill_line(data->map[i], max_len);
+		new_map[j] = fill_line(data->map[i], max_len, 0);
 		j++;
 		i++;
 	}
@@ -97,34 +95,31 @@ char	**create_new_map(t_data *data, int max_len, char **new_map, char *x_lines)
 	return (new_map);
 }
 
-bool	is_map_closed(char **new_map, int len, int rows)
+bool	is_map_closed(char **map, int len, int rows, int i)
 {
-	int	i;
 	int	j;
 
-	i = 0;
 	while (i < rows)
 	{
 		j = 0;
 		while (j < len)
 		{
-			if (new_map[i][j] == '0' || new_map[i][j] == 'S' || new_map[i][j] == 'W' || 
-                new_map[i][j] == 'E' || new_map[i][j] == 'N')
+			if (is_starting_point(map, i, j) == true || map[i][j] == '0')
 			{
-				if (i == 0 || j == 0 || i == rows|| j == len - 1)
+				if (i == 0 || j == 0 || i == rows || j == len - 1)
 					return (false);
-				if (i > 0 && !is_valid_char(new_map[i - 1][j]))
+				if (i > 0 && !is_valid_char(map[i - 1][j]))
 					return (false);
-				if (i < rows - 1 && !is_valid_char(new_map[i + 1][j]))
+				if (i < rows - 1 && !is_valid_char(map[i + 1][j]))
 					return (false);
-				if (j > 0 && !is_valid_char(new_map[i][j - 1]))
+				if (j > 0 && !is_valid_char(map[i][j - 1]))
 					return (false);
-				if (j < len - 1 && !is_valid_char(new_map[i][j + 1]))
+				if (j < len - 1 && !is_valid_char(map[i][j + 1]))
 					return (false);
 			}
 			j++;
 		}
 		i++;
 	}
-	return(true);
+	return (true);
 }

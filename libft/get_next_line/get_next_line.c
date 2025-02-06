@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 01:20:40 by mobonill          #+#    #+#             */
-/*   Updated: 2025/01/23 11:14:25 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/05 19:19:58 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ char	*get_my_rest(char *rest)
 
 	i = 0;
 	j = 0;
+	if (!rest)
+		return (NULL);
 	while (rest[i] && rest[i] != '\n')
 		i++;
 	if (!rest[i])

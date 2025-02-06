@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:21:50 by morgane           #+#    #+#             */
-/*   Updated: 2025/02/04 19:19:56 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/05 19:18:12 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,7 @@ void	check_starting_point(char **map, int map_lines, t_data *data, int j)
 			if (map[i][j] != ' ' && map[i][j] != '1' && map[i][j] != '0'
 				&& map[i][j] != '\t' && map[i][j] != '\0')
 			{
-				if (map[i][j] == 'N' || map[i][j] == 'S'
-					|| map[i][j] == 'W' || map[i][j] == 'E')
+				if (is_starting_point(map, i, j) == true)
 				{
 					data->x_pos = i + 1;
 					data->y_pos = j + 1;

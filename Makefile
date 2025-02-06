@@ -10,6 +10,7 @@ SRC =	srcs/parsing.c \
 		srcs/parsing_map.c \
 		srcs/clean_file.c \
 		srcs/main.c \
+		srcs/utils_2.c \
 
 
 RM = rm -f

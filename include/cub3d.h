@@ -6,7 +6,7 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:19:11 by morgane           #+#    #+#             */
-/*   Updated: 2025/02/04 19:22:55 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/05 18:42:12 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	check_starting_point(char **map, int map_lines, t_data *data, int j);
 // TEXTURES AND COLORS
 char	*find_textures_paths(char *file, char *txt);
 void	extract_textures(t_data *data);
-int		*find_rgb_colors(char *file, int *colors, int k, int i);
+int		*find_rgb_colors(char *file, int *colors, int k);
 void	extract_valid_colors(t_data *data);
 bool	are_colors_and_textures_before_map(t_data *data, int j);
 
@@ -80,9 +80,9 @@ bool	are_colors_and_textures_before_map(t_data *data, int j);
 // PARSING MAP
 void	parsing_map(t_data *data);
 char	*create_first_and_bottom_lines(int max_len, char *x_lines);
-char	*fill_line(char *map, int len);
+char	*fill_line(char *map, int len, int i);
 char	**create_new_map(t_data *data, int max_len, char **new_map, char *x_lines);
-bool	is_map_closed(char **new_map, int len, int rows);
+bool	is_map_closed(char **map, int len, int rows, int i);
 
 // CLEAN FILE
 bool	line_is_not_texture(t_data *data, int i, int *checker);
@@ -93,12 +93,16 @@ void	file_end_is_clean(t_data *data);
 
 
 // UTILS
-void	color_is_valid(t_data *data);
 void	print_char_tab(char **tab);
 void	err(char *str);
 int 	count_lines_fd(char *argv);
 int 	map_line_max_lenght(char **map);
 bool	is_valid_char(char c);
+
+// UITILS 2
+void	check_colors(char *file);
+bool	is_starting_point(char **map, int i, int j);
+void	color_is_valid(int *color);
 
 //FREE
 void	free_char_tab(char **tab);

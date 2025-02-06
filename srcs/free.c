@@ -6,15 +6,15 @@
 /*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 12:38:28 by morgane           #+#    #+#             */
-/*   Updated: 2025/02/04 19:11:32 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/05 18:51:27 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3d.h"
 
-void free_char_tab(char **tab)
+void	free_char_tab(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i])
@@ -23,6 +23,5 @@ void free_char_tab(char **tab)
 		i++;
 	}
 	free(tab);
-	return;
+	return ;
 }
-

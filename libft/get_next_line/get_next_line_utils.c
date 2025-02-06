@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobonill <mobonill@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/13 18:21:22 by mobonill          #+#    #+#             */
-/*   Updated: 2024/06/03 01:47:49 by mobonill         ###   ########.fr       */
+/*   Updated: 2025/02/05 19:25:17 by morgane          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen_gnl(const char *s)
 	size_t	i;
 
 	i = 0;
-	while (s && s[i])
+	while (s[i])
 		i++;
 	return (i);
 }
@@ -31,7 +31,7 @@ char	*ft_strdup(char *s)
 	str = malloc(sizeof(char) * ft_strlen_gnl(s) + 1);
 	if (!str)
 		return (NULL);
-	while (s && s[i])
+	while (s[i])
 	{
 		str[i] = ((char *)s)[i];
 		i++;
