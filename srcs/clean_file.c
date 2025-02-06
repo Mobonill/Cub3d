@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mobonill <mobonill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 19:08:33 by morgane           #+#    #+#             */
-/*   Updated: 2025/02/04 19:10:03 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/06 19:29:16 by mobonill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ bool	file_is_clean(t_data *data)
 		if (line_is_not_texture(data, i, &checker)
 			&& line_is_not_color(data, i, &checker)
 			&& line_is_not_empty(data, i))
-			err(CLEAN);
+			err(data, CLEAN);
 		i++;
 	}
 	if (checker != 6)
-		err(CLEAN);
+		err(data, CLEAN);
 	file_end_is_clean(data);
 	return (true);
 }
@@ -103,7 +103,7 @@ void	file_end_is_clean(t_data *data)
 		{
 			if (data->file[i][j] != ' ' && data->file[i][j] != '\t'
 				&& data->file[i][j] != '\n' && data->file[i][j] != '\0')
-				err(CLEAN);
+				err(data, CLEAN);
 			j++;
 		}
 		i++;

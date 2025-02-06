@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mobonill <mobonill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 19:21:50 by morgane           #+#    #+#             */
-/*   Updated: 2025/02/05 19:18:12 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/06 19:45:48 by mobonill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ void	copy_cub_file(char *argv, t_data *data)
 	if (fd < 0)
 	{
 		free(line);
-		err(OPENFD);
+		err(data, OPENFD);
 	}
 	i = count_lines_fd(argv);
 	data->file = malloc(sizeof(char *) * (i + 1));
 	if (!data->file)
-		err(MALLOC);
+		err(data, MALLOC);
 	i = 0;
 	line = get_next_line(fd);
 	while (line != NULL)
@@ -76,7 +76,7 @@ void	where_is_the_map(t_data *data, char **file, int *map_lines)
 		i++;
 	}
 	if (data->map_start == -1 || *map_lines < 3)
-		err(MAP_INVALID);
+		err(data, MAP_INVALID);
 	data->end_map = data->map_start + *map_lines;
 }
 
@@ -86,13 +86,13 @@ void	save_map(t_data *data, char **file, char ***map, int *map_lines)
 
 	*map = (char **)malloc(sizeof(char *) * (*map_lines + 1));
 	if (!*map)
-		err(MALLOC);
+		err(data, MALLOC);
 	i = 0;
 	while (i < *map_lines)
 	{
 		(*map)[i] = ft_strdup(file[data->map_start + i]);
 		if (!(*map)[i])
-			err(MALLOC);
+			err(data, MALLOC);
 		i++;
 	}
 	(*map)[i] = NULL;
@@ -105,23 +105,24 @@ void	check_starting_point(char **map, int map_lines, t_data *data, int j)
 	i = -1;
 	while (++i < map_lines && map[i])
 	{
-		j = 0;
-		while (map[i][j] != '\0')
+		j = -1;
+		while (map[i][++j] != '\0')
 		{
 			if (map[i][j] != ' ' && map[i][j] != '1' && map[i][j] != '0'
-				&& map[i][j] != '\t' && map[i][j] != '\0')
+				&& map[i][j] != '\t' && map[i][j] != '\0' && map[i][j] != '\n')
 			{
 				if (is_starting_point(map, i, j) == true)
 				{
+					if (data->x_pos != -1)
+						err(data, STARTING_POINT);
 					data->x_pos = i + 1;
 					data->y_pos = j + 1;
 				}
 				else
-					err(CHAR_NOT_VALID);
+					err(data, CHAR_NOT_VALID);
 			}
-			j++;
 		}
 	}
 	if (data->x_pos == 0 && data->y_pos == 0)
-		err(STARTING_POINT);
+		err(data, STARTING_POINT);
 }

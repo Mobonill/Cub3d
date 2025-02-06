@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_map.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mobonill <mobonill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 18:24:05 by morgane           #+#    #+#             */
-/*   Updated: 2025/02/05 18:54:03 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/06 19:36:31 by mobonill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,22 @@ void	parsing_map(t_data *data)
 	x_lines = NULL;
 	check_starting_point(data->map, data->map_lines, data, 0);
 	max_len = map_line_max_lenght(data->map);
-	x_lines = create_first_and_bottom_lines(max_len, x_lines);
+	x_lines = create_first_and_bottom_lines(max_len, x_lines, data);
 	data->new_map = create_new_map(data, max_len, data->new_map, x_lines);
 	if (is_map_closed(data->new_map, max_len + 1, data->map_lines + 2, 0)
 		== false)
-		err(MAP_OPENED);
+		err(data, MAP_OPENED);
 	print_char_tab(data->new_map);
 }
 
-char	*create_first_and_bottom_lines(int max_len, char *x_lines)
+char	*create_first_and_bottom_lines(int max_len, char *x_lines, t_data *data)
 {
 	int	j;
 
 	j = 0;
 	x_lines = malloc(sizeof(char) * (max_len + 3));
 	if (!x_lines)
-		err(MALLOC);
+		err(data, MALLOC);
 	while (j <= max_len)
 	{
 		x_lines[j] = 'X';

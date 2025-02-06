@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: morgane <morgane@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mobonill <mobonill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/11 12:01:10 by morgane           #+#    #+#             */
-/*   Updated: 2025/02/05 19:09:37 by morgane          ###   ########.fr       */
+/*   Updated: 2025/02/06 19:29:57 by mobonill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ void	print_char_tab(char **tab)
 	return ;
 }
 
-void	err(char *str)
+void	err(t_data *data, char *str)
 {
 	while (*str)
 		write(2, str++, 1);
+	free_all(data);
 	exit(1);
 }
 
@@ -42,7 +43,7 @@ int	count_lines_fd(char *argv)
 	len = 0;
 	fd = open(argv, O_RDONLY);
 	if (fd < 0)
-		err(OPENFD);
+		err(NULL, OPENFD);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{

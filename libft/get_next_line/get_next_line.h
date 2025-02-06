@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobonill <mobonill@student.42nice.fr>      +#+  +:+       +#+        */
+/*   By: mobonill <mobonill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 13:33:23 by mobonill          #+#    #+#             */
-/*   Updated: 2024/06/03 01:48:07 by mobonill         ###   ########.fr       */
+/*   Updated: 2025/02/06 18:10:14 by mobonill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,8 @@
 # include <unistd.h>
 
 char	*get_next_line(int fd);
+size_t	ft_strlen(const char *s);
+char	*ft_strchr(const char *s, int c);
 char	*ft_strjoin_gnl(char *s1, char *s2);
-char	*ft_strchr_gnl(const char *s, int c);
-size_t	ft_strlen_gnl(const char *s);
-int		ft_strchri(char *s, char c);
 
 #endif
